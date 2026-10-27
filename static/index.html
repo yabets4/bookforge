@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BookForge Server</title>
+  <link rel="stylesheet" href="/static/dashboard.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='14' y='6' width='72' height='88' rx='10' fill='%23c0643c'/><path d='M40 34v32l26-16z' fill='%23fffaf1'/></svg>">
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div>
+        <div class="eyebrow">BookForge</div>
+        <h1 class="pageTitle">Server</h1>
+      </div>
+      <div class="live" id="live"><i></i><span>Running</span></div>
+    </header>
+
+    <div class="grid">
+      <aside class="col">
+        <section class="card connect">
+          <h2 class="cardTitle">Connect your phone</h2>
+          <img class="qr" id="qr" alt="QR code that opens the phone app">
+          <div class="url" id="app-url">…</div>
+          <button class="secondaryBtn" id="copy">Copy address</button>
+          <p class="note">Phone and PC on the same Wi-Fi. Scan the code, or type the address into the BookForge app's Settings.</p>
+        </section>
+
+        <section class="card">
+          <h2 class="cardTitle">This PC</h2>
+          <div class="kv"><span>Voice engine</span><b id="m-engine">—</b></div>
+          <div class="kv"><span>Graphics card</span><b id="m-gpu">—</b></div>
+          <div class="kv"><span>Graphics memory</span><b id="m-mem">—</b></div>
+          <div class="kv"><span>Model</span><b id="m-model">—</b></div>
+          <div class="kv"><span>Up for</span><b id="m-up">—</b></div>
+          <p class="note">Keep this window's server running and the PC awake while books are being made.</p>
+        </section>
+      </aside>
+
+      <main class="col">
+        <section>
+          <div class="sectionHead"><h2 class="sectionTitle">Jobs</h2><span class="muted" id="jobs-count"></span></div>
+          <div id="jobs"></div>
+          <div class="card emptyCard" id="jobs-empty">
+            <b>No books in progress</b>
+            <span>Send a book from the phone app and it shows up here.</span>
+          </div>
+        </section>
+
+        <section>
+          <div class="sectionHead"><h2 class="sectionTitle">Finished audiobooks</h2><span class="muted" id="lib-size"></span></div>
+          <div class="card list" id="library"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <div class="toast" id="toast" hidden></div>
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>

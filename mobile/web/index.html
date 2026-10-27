@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>BookForge</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f6efe2">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='14' y='6' width='72' height='88' rx='10' fill='%23c0643c'/><path d='M40 34v32l26-16z' fill='%23fffaf1'/></svg>">
+</head>
+<body>
+  <div class="shell">
+    <main class="view" id="view">
+
+      <!-- LIBRARY -->
+      <section class="page" data-page="library">
+        <header class="pageHead">
+          <div>
+            <div class="eyebrow">BookForge</div>
+            <h1 class="pageTitle">Library</h1>
+          </div>
+          <button class="iconBtn accent" id="btn-add" aria-label="Add a book" data-icon="plus"></button>
+        </header>
+
+        <div class="importing card" id="importing" hidden>
+          <div class="spinner"></div>
+          <div><b id="importing-name">Reading book…</b><span>Finding chapters on the PC</span></div>
+        </div>
+
+        <div class="card jobCard" id="job-card" hidden>
+          <div class="prep" id="job-prep">
+            <svg class="prepRing" viewBox="0 0 80 80">
+              <circle class="track" cx="40" cy="40" r="34" />
+              <circle class="fill" id="job-ring" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6" />
+              <text x="40" y="45" text-anchor="middle" id="job-pct">0%</text>
+            </svg>
+            <div class="prepBody">
+              <b id="job-title">Book</b>
+              <span id="job-status">Starting…</span>
+              <small id="job-detail"></small>
+            </div>
+          </div>
+          <div class="btnRow" id="job-actions"></div>
+        </div>
+
+        <h2 class="sectionTitle" id="shelf-title" hidden>Audiobooks</h2>
+        <div class="shelf" id="shelf"></div>
+
+        <div class="empty" id="empty" hidden>
+          <div class="emptyArt" id="empty-art"></div>
+          <h2>Send a book to your PC</h2>
+          <p>Pick a PDF, EPUB or text file. The PC reads it aloud with its graphics card and sends back an audiobook.</p>
+          <button class="primaryBtn" id="btn-add-empty"><span data-icon="plus"></span> Add a book</button>
+          <button class="textBtn" id="btn-scan-empty">Connect to a PC — scan its code</button>
+        </div>
+        <input type="file" id="file-input" accept=".pdf,.epub,.txt,.md" hidden>
+      </section>
+
+      <!-- LISTEN -->
+      <section class="page playerPage" data-page="player" hidden>
+        <div class="topBar">
+          <span class="topTitle">Now playing</span>
+          <div class="topActions">
+            <button class="iconBtn" id="btn-text" aria-label="Read along" data-icon="text" hidden></button>
+            <button class="iconBtn" id="btn-save-current" aria-label="Save to phone" data-icon="phone" hidden></button>
+          </div>
+        </div>
+        <div class="empty" id="player-empty">
+          <div class="emptyArt" id="player-empty-art"></div>
+          <h2>Nothing playing</h2>
+          <p>Tap a book in your library to listen to it here.</p>
+        </div>
+        <div class="playerBody" id="player-body" hidden>
+          <div class="stage" id="stage"></div>
+          <div class="deck">
+            <div class="nowMeta"><h2 id="np-title"></h2><span id="np-sub"></span></div>
+            <div class="scrub">
+              <input type="range" id="scrubber" min="0" max="1000" value="0" aria-label="Position">
+              <div class="scrubLabels"><span id="t-now">0:00</span><span id="t-left">-0:00</span></div>
+            </div>
+            <div class="controls">
+              <button class="ctrl" id="btn-speed"><span class="speedTxt" id="speed-txt">1×</span></button>
+              <button class="ctrl" id="btn-back" aria-label="Back 15 seconds" data-icon="back15"></button>
+              <button class="playBtn" id="btn-play" aria-label="Play" data-icon="play"></button>
+              <button class="ctrl" id="btn-fwd" aria-label="Forward 30 seconds" data-icon="fwd30"></button>
+              <button class="ctrl" id="btn-more" aria-label="More" data-icon="more"></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="page" data-page="settings" hidden>
+        <header class="pageHead">
+          <div>
+            <div class="eyebrow">BookForge</div>
+            <h1 class="pageTitle">Settings</h1>
+          </div>
+        </header>
+
+        <h2 class="sectionTitle">Compiler PC</h2>
+        <div class="card">
+          <div class="kv"><span>Status</span><b id="st-status">Checking…</b></div>
+          <div class="kv"><span>Voice engine</span><b id="st-engine">—</b></div>
+          <div class="kv"><span>Address</span><b id="st-url">—</b></div>
+          <button class="primaryBtn" id="btn-scan" style="margin-top:14px"><span data-icon="qr"></span> Scan the PC's QR code</button>
+          <p class="muted small">Open BookForge on the PC and scan the code it shows. The phone remembers that PC. Phone and PC must be on the same Wi-Fi.</p>
+          <div class="label">Or type the address</div>
+          <input class="field" id="server-input" inputmode="url" autocomplete="off" spellcheck="false" placeholder="http://192.168.1.20:8000">
+          <button class="secondaryBtn" id="btn-connect">Connect</button>
+        </div>
+
+        <h2 class="sectionTitle">Saved on this phone</h2>
+        <div class="card">
+          <div class="kv"><span>Audiobooks</span><b id="st-saved">0</b></div>
+          <div class="kv"><span>Space used</span><b id="st-space">0 MB</b></div>
+          <label class="kv switchRow"><span>Save finished books automatically</span><input type="checkbox" id="auto-save" class="switch"></label>
+          <p class="muted small">Saved books play without the PC or Wi-Fi.</p>
+        </div>
+
+        <h2 class="sectionTitle">Playback</h2>
+        <div class="card">
+          <div class="kv"><span>Skip back</span><b>15 seconds</b></div>
+          <div class="kv"><span>Skip forward</span><b>30 seconds</b></div>
+          <p class="muted small">Your place in each book is remembered on this phone.</p>
+        </div>
+
+        <p class="muted small" style="text-align:center;margin-top:22px">BookForge · Kokoro-82M (Apache-2.0)</p>
+      </section>
+    </main>
+
+    <div class="mini" id="mini" hidden>
+      <div id="mini-cover"></div>
+      <div class="miniText"><b id="mini-title"></b><span id="mini-sub"></span></div>
+      <button class="miniBtn" id="mini-btn" aria-label="Play" data-icon="play"></button>
+      <i class="miniProgress" id="mini-progress"></i>
+    </div>
+
+    <nav class="tabbar">
+      <button class="tab on" data-tab="library"><span data-icon="library"></span><span>Library</span><i class="tabDot" id="lib-dot" hidden></i></button>
+      <button class="tab" data-tab="player"><span data-icon="player"></span><span>Listen</span></button>
+      <button class="tab" data-tab="settings"><span data-icon="settings"></span><span>Settings</span></button>
+    </nav>
+  </div>
+
+  <!-- book setup sheet: voice, speed, format, chapters -->
+  <div class="sheetBackdrop" id="book-sheet" hidden>
+    <div class="sheet">
+      <div class="sheetGrip"></div>
+      <div class="bookTop">
+        <div id="bk-cover"></div>
+        <div><h3 id="bk-title"></h3><span id="bk-meta"></span></div>
+      </div>
+
+      <div class="label">Narrator</div>
+      <div class="card list">
+        <button class="listRow" id="bk-voice">
+          <span class="avatar" id="bk-voice-av">H</span>
+          <span class="listText"><b id="bk-voice-name">Heart</b><em id="bk-voice-desc"></em></span>
+          <span data-icon="chevron"></span>
+        </button>
+      </div>
+
+      <div class="label">Reading speed</div>
+      <div class="card">
+        <div class="speedBig" id="bk-speed-val">1.00×</div>
+        <div class="sliderRow"><span>Slower</span><input type="range" id="bk-speed" min="0.8" max="1.5" step="0.05" value="1"><span>Faster</span></div>
+      </div>
+
+      <div class="label">File</div>
+      <div class="seg" id="bk-format">
+        <button data-fmt="m4b" class="on"><b>Audiobook</b><em>One .m4b with chapters</em></button>
+        <button data-fmt="zip"><b>MP3 tracks</b><em>.zip, one per chapter</em></button>
+      </div>
+
+      <div class="label chapHead"><span>Chapters · <span id="bk-chap-count">0</span></span><button class="textBtn" id="bk-toggle">Select none</button></div>
+      <div class="card list chapters" id="bk-chapters"></div>
+
+      <div class="sheetFoot">
+        <button class="primaryBtn" id="bk-start"><span data-icon="wave"></span> Make audiobook</button>
+        <button class="textBtn" id="bk-cancel" style="color:var(--dim)">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- narrator picker -->
+  <div class="sheetBackdrop" id="voice-sheet" hidden>
+    <div class="sheet">
+      <div class="sheetGrip"></div>
+      <h3 class="sheetTitle">Narrator</h3>
+      <div id="voice-list"></div>
+    </div>
+  </div>
+
+  <!-- QR scanner -->
+  <div class="sheetBackdrop" id="scan-sheet" hidden>
+    <div class="sheet">
+      <div class="sheetGrip"></div>
+      <h3 class="sheetTitle">Scan the PC's code</h3>
+      <div class="scanBox" id="scan-box">
+        <video id="scan-video" playsinline muted></video>
+        <i class="scanFrame"></i>
+        <p class="scanMsg" id="scan-msg" hidden></p>
+      </div>
+      <p class="muted small" id="scan-hint" style="text-align:center;margin-top:12px">Point the camera at the QR code on the PC's BookForge screen.</p>
+      <button class="secondaryBtn" id="scan-photo"><span data-icon="image"></span> Use a photo of the code</button>
+      <input type="file" id="scan-file" accept="image/*" capture="environment" hidden>
+      <button class="textBtn" id="scan-cancel" style="color:var(--dim)">Cancel</button>
+    </div>
+  </div>
+
+  <!-- per-book actions -->
+  <div class="sheetBackdrop" id="menu-sheet" hidden>
+    <div class="sheet">
+      <div class="sheetGrip"></div>
+      <h3 class="sheetTitle" id="menu-title"></h3>
+      <div id="menu-rows"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="alert" hidden><span id="toast-text"></span></div>
+  <audio id="audio" preload="metadata"></audio>
+
+  <script src="jsQR.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

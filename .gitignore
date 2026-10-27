@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+ENV/
+
+# Storage / User Audiobooks
+storage/uploads/*
+storage/temp/*
+storage/output/*
+storage/previews/*
+!storage/uploads/.gitkeep
+!storage/temp/.gitkeep
+!storage/output/.gitkeep
+!storage/previews/.gitkeep
+
+# Node / Mobile
+node_modules/
+mobile/node_modules/
+mobile/www/
+mobile/android/.gradle/
+mobile/android/app/build/
+mobile/android/build/
+mobile/android/local.properties
+mobile/android/.idea/
+mobile/android/capacitor-cordova-android-plugins/
+mobile/android/app/src/main/assets/public/
+mobile/android/app/src/main/assets/capacitor.config.json
+mobile/android/app/src/main/assets/capacitor.plugins.json
+*.apk
+!BookForge.apk
+
+# OS
+.DS_Store
+Thumbs.db
