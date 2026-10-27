@@ -7,6 +7,11 @@ __pycache__/
 venv/
 ENV/
 
+# Logs
+logs/
+*.log
+storage/*.log
+
 # Storage / User Audiobooks
 storage/uploads/*
 storage/temp/*
